@@ -1,0 +1,60 @@
+{% extends 'base.html' %}
+
+{% block title %}
+    Register New Device
+{% endblock %}
+
+{% block content %}
+
+    <div class="col-md-offset-3 col-md-6">
+         <h1>Register New Device</h1>
+        <form action="" method="post">
+        {{ form.hidden_tag() }}
+        <p>
+            {{ form.device_EUI.label(class="control-label") }}<br>
+            {{ form.device_EUI(size=32, class="form-control", placeholder="Input device EUI") }}<br>
+            {% for error in form.device_EUI.errors %}
+            <span style="color: red;">[{{ error }}]</span>
+            {% endfor %}
+        </p>
+        <p>
+            {{ form.device_name.label(class="control-label") }}<br>
+            {{ form.device_name(size=64, class="form-control", placeholder="Input device name") }}<br>
+            {% for error in form.device_name.errors %}
+            <span style="color: red;">[{{ error }}]</span>
+            {% endfor %}
+        </p>
+            <p>
+            {{ form.description.label(class="control-label") }}<br>
+            {{ form.description(size=64, class="form-control", placeholder="Input description") }}<br>
+            {% for error in form.description.errors %}
+            <span style="color: red;">[{{ error }}]</span>
+            {% endfor %}
+        </p>
+            <p>
+            {{ form.device_profile_id.label(class="control-label") }}<br>
+            {{ form.device_profile_id(size=64, class="form-control", placeholder="Input device profile ID") }}<br>
+            {% for error in form.device_profile_id.errors %}
+            <span style="color: red;">[{{ error }}]</span>
+            {% endfor %}
+        </p>
+            <p>
+            {{ form.application_id.label(class="control-label") }}<br>
+            {{ form.application_id(size=64, class="form-control", placeholder="Input service profile id") }}<br>
+            {% for error in form.application_id.errors %}
+            <span style="color: red;">[{{ error }}]</span>
+            {% endfor %}
+        </p>
+        <p>
+            {{ form.application_name.label(class="control-label") }}<br>
+            {{ form.application_name(size=32, class="form-control", placeholder="Input application name") }}<br>
+            {% for error in form.application_name.errors %}
+            <span style="color: red;">[{{ error }}]</span>
+            {% endfor %}
+        </p>
+
+        <p>{{ form.submit(class="btn btn-success") }}</p>
+    </form>
+    </div>
+
+{% endblock %}

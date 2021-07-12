@@ -1,0 +1,53 @@
+{% extends 'base.html' %}
+
+{% block title %}
+    Devices
+{% endblock %}
+
+{% block content %}
+    <h1 class="page-header">Devices</h1>
+{% if device_dict %}
+    <h2 class="sub-header"></h2>
+                  <div class="table-responsive">
+                    <table class="table table-striped">
+                      <thead>
+                        <tr>
+                            <th>Device EUI</th>
+                            <th>DevName</th>
+                            <th>AppID</th>
+                            <th>Description</th>
+                            <th>Device Profile ID</th>
+                            <th>Device Profile Name</th>
+                            <th>Device Battery</th>
+                            <th>Last seen</th>
+                        </tr>
+                      </thead>
+                    <tbody>
+                        {% for device in device_dict['devices'] %}
+                            <tr>
+                                <td>{{ device.get('devEUI') }}</td>
+                                <td>{{ device.get('name') }}</td>
+                                <td>{{ device.get('applicationID') }}</td>
+                                <td>{{ device.get('description') }}</td>
+                                <td>{{ device.get('deviceProfileID') }}</td>
+                                <td>{{ device.get('deviceProfileName') }}</td>
+                                <td>{{ device.get('deviceStatusBattery') }}</td>
+                                <td>{{ device.get('lastSeenAt') }}</td>
+                                <td><a href="{{ url_for('service.device_data', device_eui=device.get('devEUI')) }}" class="btn btn-success">Get data</a></td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                    </table>
+                    <p>Total count of devices: {{ total_count }}</p>
+                </div>
+                <div class="col-md-3">
+                    <form method="post">
+                            <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
+
+                            <label for="del_id_item"></label>
+                            <input type="text" name="del_id_item" id="del_id_item" class="form-control" placeholder="Input Device EUI for delete"><br>
+                            <input type="submit" class="btn btn-danger btn-rounded" value="Delete device">
+                    </form>
+                </div>
+{% endif %}
+{% endblock %}

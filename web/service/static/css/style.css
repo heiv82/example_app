@@ -1,0 +1,12 @@
+body {
+    padding-top: 80px;
+    }
+
+td > a {
+  display: block;
+}
+
+#brand-image
+{
+      height: 35px;
+}

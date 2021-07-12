@@ -1,0 +1,61 @@
+version: '3'
+
+services:
+  db:
+    container_name: db2
+    image: mysql/mysql-server:latest
+    restart: always
+    networks:
+      - chirpstack-docker_default
+    environment:
+      - MYSQL_DATABASE=db_dates
+      - MYSQL_USER=root
+      - MYSQL_PASSWORD=1772735=-
+      - MYSQL_ROOT_PASSWORD=1772735=-
+    command: mysqld --default-authentication-plugin=mysql_native_password --skip-mysqlx
+    ports:
+      - "33066:3306"
+    volumes:
+      - db_dates:/var/lib/mysql
+
+  web:
+    container_name: web2
+    build: ./web
+    restart: always
+    networks:
+      - chirpstack-docker_default
+    links:
+      - db:db
+    depends_on:
+      - db
+    ports:
+      - "5000:5000"
+    volumes:
+      - ./web:/app
+    environment:
+      PYTHONUNBUFFERED: 1
+
+  mqtt:
+    container_name: mqtt2
+    build: ./mqtt_client1
+    restart: always
+    networks:
+      - chirpstack-docker_default
+    links:
+      - db:dbs
+    depends_on:
+      - db
+    ports:
+      - "18833:1833"
+    volumes:
+      - ./mqtt_client1:/mqtt
+    environment:
+      PYTHONUNBUFFERED: 1
+
+
+
+volumes:
+  db_dates:
+networks:
+  chirpstack-docker_default:
+    external: true
