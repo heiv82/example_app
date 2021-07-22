@@ -10,8 +10,8 @@ services:
     environment:
       - MYSQL_DATABASE=db_dates
       - MYSQL_USER=root
-      - MYSQL_PASSWORD=1772735=-
-      - MYSQL_ROOT_PASSWORD=1772735=-
+      - MYSQL_PASSWORD=<password>
+      - MYSQL_ROOT_PASSWORD=<password>
     command: mysqld --default-authentication-plugin=mysql_native_password --skip-mysqlx
     ports:
       - "33066:3306"
