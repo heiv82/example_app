@@ -10,7 +10,7 @@ app = Flask(__name__)
 
 broker_address = "mosquitto"
 app.config['SECRET_KEY'] = os.urandom(12).hex()
-app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql+mysqlconnector://root:1772735=-@db/db_dates'
+app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql+mysqlconnector://root:<password>@db/db_dates'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
 
