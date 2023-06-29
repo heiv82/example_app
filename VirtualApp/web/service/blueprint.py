@@ -20,17 +20,12 @@ api_url_base = app.config['API_URL_BASE']
 ##########################################################################################################
 #                                            UNI FUNCTION                                                #
 ##########################################################################################################
-
-
-# GET only one item with unique ID
-def get_one_item(url, headers):
-    api_url = f"{api_url_base}{url}"
-    response = requests.get(api_url, headers=headers)
+def handle_response(response):
     if response.status_code >= 500:
         flash(f'[!] [{response.status_code}] Server Error')
         return None
     elif response.status_code == 404:
-        flash(f'[!] [{response.status_code}] URL not found: [{api_url}]')
+        flash(f'[!] [{response.status_code}] URL not found: [{response.url}]')
         return None
     elif response.status_code == 401:
         flash(f'[!] [{response.status_code}] Authentication Failed')
@@ -42,129 +37,44 @@ def get_one_item(url, headers):
         flash(f'[!] [{response.status_code}] Unexpected Redirect')
         return None
     elif response.status_code == 200:
-        one_item = json.loads(response.content.decode('utf-8'))
-        return one_item
+        return json.loads(response.content.decode('utf-8'))
     else:
         flash(f'[?] Unexpected Error: [HTTP {response.status_code}]: Content: {response.content}')
     return None
+
+# GET only one item with unique ID
+def get_one_item(url, headers):
+    api_url = f"{api_url_base}{url}"
+    response = requests.get(api_url, headers=headers)
+    return handle_response(response)
 
 
 # DELETE one item with unique ID
 def delete_item(url, headers):
     api_url = f"{api_url_base}{url}"
     response = requests.delete(api_url, headers=headers)
-
-    if response.status_code >= 500:
-        flash(f'[!] [{response.status_code}] Server Error')
-        return None
-    elif response.status_code == 404:
-        flash(f'[!] [{response.status_code}] URL not found: [{api_url}]')
-        return None
-    elif response.status_code == 401:
-        flash(f'[!] [{response.status_code}] Authentication Failed')
-        return None
-    elif response.status_code == 400:
-        flash(f'[!] [{response.status_code}] Bad Request or invalid character "s" looking for beginning of value')
-        return None
-    elif response.status_code >= 300:
-        flash(f'[!] [{response.status_code}] Unexpected Redirect')
-        return None
-    elif response.status_code == 200:
-        delete_one_item = json.loads(response.content)
-        return response.status_code
-    else:
-        flash(f'[?] Unexpected Error: [HTTP {response.status_code}]: Content: {response.content}')
-    return None
+    return handle_response(response)
 
 
 # Universal function for GET
 def get_uni(url, headers):
     api_url = f"{api_url_base}{url}"
     response = requests.get(api_url, headers=headers)
-
-    if response.status_code >= 500:
-        flash(f'[!] [{response.status_code}] Server Error')
-        return None
-    elif response.status_code == 404:
-        flash(f'[!] [{response.status_code}] URL not found: [{api_url}]')
-        return None
-    elif response.status_code == 401:
-        flash(f'[!] [{response.status_code}] Authentication Failed')
-        return None
-    elif response.status_code == 400:
-        flash(f'[!] [{response.status_code}] Bad Request or invalid character "s" looking for beginning of value')
-        return None
-    elif response.status_code >= 300:
-        flash(f'[!] [{response.status_code}] Unexpected Redirect')
-        return None
-    elif response.status_code == 200:
-        list_of_items = json.loads(response.content.decode('utf-8'))
-        return list_of_items
-    else:
-        flash(f'[?] Unexpected Error: [HTTP {response.status_code}]: Content: {response.content}')
-    return None
+    return handle_response(response)
 
 
 # Universal function for POST
 def post_uni(url, headers, dict_items):
     api_url = f"{api_url_base}{url}"
     response = requests.post(api_url, headers=headers, json=dict_items)
-
-    if response.status_code >= 500:
-        flash(f'[!] [{response.status_code}] Server Error')
-        return None
-    elif response.status_code >= 409:
-        flash(f'[!] [{response.status_code}] Object already exists')
-        return None
-    elif response.status_code == 404:
-        flash(f'[!] [{response.status_code}] URL not found: [{api_url}]')
-        return None
-    elif response.status_code == 401:
-        flash(f'[!] [{response.status_code}] Authentication Failed')
-        return None
-    elif response.status_code >= 400:
-        flash(f'[!] [{response.status_code}] Bad Request or invalid character "s" looking for beginning of value.')
-        return None
-    elif response.status_code >= 300:
-        flash(f'[!] [{response.status_code}] Unexpected redirect.')
-        return None
-    elif response.status_code == 200:
-        update_item = json.loads(response.content)
-        return response.status_code
-    else:
-        flash(f'[?] Unexpected Error: [HTTP {response.status_code}]: Content: {response.content}')
-        return None
+    return handle_response(response)
 
 
 # Universal function for edit any item
 def put_uni(url, headers, dict_items):
     api_url = f"{api_url_base}{url}"
     response = requests.put(api_url, headers=headers, json=dict_items)
-
-    if response.status_code >= 500:
-        flash(f'[!] [{response.status_code}] Server Error')
-        return None
-    elif response.status_code >= 409:
-        flash(f'[!] [{response.status_code}] Object already exists')
-        return None
-    elif response.status_code == 404:
-        flash(f'[!] [{response.status_code}] URL not found: [{api_url}]')
-        return None
-    elif response.status_code == 401:
-        flash(f'[!] [{response.status_code}] Authentication Failed')
-        return None
-    elif response.status_code >= 400:
-        flash(f'[!] [{response.status_code}] Bad Request or invalid character "s" looking for beginning of value')
-        return None
-    elif response.status_code >= 300:
-        flash(f'[!] [{response.status_code}] Unexpected redirect.')
-        return None
-    elif response.status_code == 200:
-        added_item = json.loads(response.content)
-        return response.status_code
-    else:
-        flash(f'[?] Unexpected Error: [HTTP {response.status_code}]: Content: {response.content}')
-        return None
+    return handle_response(response)
 
 
 ##########################################################################################################
